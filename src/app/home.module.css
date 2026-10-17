@@ -1,0 +1,775 @@
+/* Главная Soul Beer. Один мотив — круг пластинки из буквы O на вывеске.
+   Цвета взяты из самого бара: бордовые стены, кремовая вывеска, красные абажуры, янтарные лампы, чёрный винил. */
+
+.page {
+  --ground: #2b1315;
+  --ink: #f4e9d8;
+  --muted: #dccbb3;
+  --paper: #f4e9d8;
+  --paper-ink: #1c1011;
+  --paper-muted: #4f3a36;
+  --accent: #d1282e;
+  --accent-hover: #b31f25;
+  --accent-ink: #fff6ea;
+  --amber: #efa53a;
+  --vinyl: #120b0b;
+
+  --step-small: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem);
+  --step-body: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+  --step-lead: clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem);
+  --step-head: clamp(2rem, 1.3rem + 3.2vw, 4rem);
+  --step-display: clamp(2.6rem, 1.2rem + 4.4vw, 5.25rem);
+
+  --m: clamp(16px, 2.2vw, 32px);
+  --section: clamp(96px, 11vw, 200px);
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: var(--step-body);
+  line-height: 1.5;
+  overflow-x: clip;
+}
+
+.page h1,
+.page h2 {
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1;
+  text-wrap: balance;
+}
+
+/* ---------- Навигация ---------- */
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 18px var(--m);
+}
+
+.wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: var(--step-lead);
+  letter-spacing: -0.03em;
+}
+
+.dot {
+  width: 0.62em;
+  height: 0.62em;
+  border-radius: 50%;
+  background: var(--accent);
+  position: relative;
+  flex: none;
+}
+.dot::after {
+  content: "";
+  position: absolute;
+  inset: 38%;
+  border-radius: 50%;
+  background: var(--ground);
+}
+
+.navLinks {
+  display: flex;
+  align-items: center;
+  gap: clamp(16px, 2.4vw, 36px);
+}
+
+.navLink {
+  font-weight: 500;
+  transition: opacity 0.25s var(--ease);
+}
+.navLink:hover {
+  opacity: 0.7;
+}
+
+/* ---------- Кнопки: круг пластинки, вытянутый в пилюлю ---------- */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 28px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-weight: 600;
+  font-size: var(--step-body);
+  transition: transform 0.25s var(--ease), background-color 0.25s var(--ease);
+}
+.button:hover {
+  background: var(--accent-hover);
+  transform: translateY(-2px);
+}
+.button:active {
+  transform: translateY(0) scale(0.98);
+}
+.buttonSmall {
+  min-height: 44px;
+  padding: 0 20px;
+}
+
+/* ---------- Первый экран ---------- */
+
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 0 12px 12px;
+  min-height: calc(100svh - 80px);
+}
+
+.card {
+  background: var(--paper);
+  color: var(--paper-ink);
+  padding: clamp(28px, 4.2vw, 72px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 48px;
+}
+
+.heroTitle {
+  font-size: var(--step-display);
+  max-width: 16ch;
+}
+
+.heroText {
+  margin-top: 28px;
+  max-width: 34ch;
+  font-size: var(--step-lead);
+  line-height: 1.35;
+  color: var(--paper-ink);
+}
+
+.heroActions {
+  margin-top: 40px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px 28px;
+}
+
+.inlineLink {
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+  text-decoration-thickness: 2px;
+  transition: opacity 0.25s var(--ease);
+}
+.inlineLink:hover {
+  opacity: 0.65;
+}
+
+.heroFoot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 28px;
+  font-size: var(--step-body);
+  color: var(--paper-muted);
+}
+.heroFoot strong {
+  color: var(--paper-ink);
+  font-weight: 600;
+}
+
+.stage {
+  position: relative;
+  overflow: hidden;
+  background: var(--accent);
+  min-height: 520px;
+}
+
+/* Пластинка: огромный круг, срезанный правым краем экрана */
+.record {
+  position: absolute;
+  top: 50%;
+  left: 8%;
+  width: min(118vh, 74vw);
+  aspect-ratio: 1;
+  transform: translateY(-50%);
+}
+
+.disc {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  animation: spin 9s linear infinite;
+}
+
+.label {
+  position: absolute;
+  inset: 31%;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--vinyl);
+}
+
+.labelPhoto {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  animation: crossfade 21s linear infinite both;
+}
+.labelPhoto:first-child {
+  opacity: 1;
+}
+
+.spindle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 3.2%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--ground);
+  transform: translate(-50%, -50%);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes crossfade {
+  0% { opacity: 0; }
+  7.6% { opacity: 1; }
+  33.3% { opacity: 1; }
+  41% { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+/* ---------- Общие секции ---------- */
+
+.section {
+  padding: var(--section) var(--m) 0;
+}
+
+.sectionHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: clamp(40px, 5vw, 72px);
+}
+
+.head {
+  font-size: var(--step-head);
+}
+
+.count {
+  color: var(--muted);
+  font-size: var(--step-body);
+}
+
+/* ---------- На кране ---------- */
+
+.taps {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px 64px;
+  max-width: 1280px;
+}
+
+.tap {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+/* Пиво, если смотреть в бокал сверху: круг цвета пива с пенным кольцом */
+.glass {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--amber);
+  border: 7px solid var(--paper);
+}
+.glassOff {
+  background: var(--paper-muted);
+}
+
+.tapLine {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  font-size: var(--step-lead);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.tapDesc {
+  margin-top: 6px;
+  color: var(--muted);
+  max-width: 38ch;
+}
+
+.tapsMore {
+  margin-top: clamp(48px, 5vw, 72px);
+}
+
+/* ---------- Зал: карусель на кремовом поле ---------- */
+
+.room {
+  margin-top: var(--section);
+  padding: var(--section) var(--m);
+  background: var(--paper);
+  color: var(--paper-ink);
+}
+
+.roomGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2.2fr);
+  gap: clamp(32px, 5vw, 96px);
+  align-items: center;
+}
+
+.roomText {
+  margin-top: 24px;
+  max-width: 30ch;
+  color: var(--paper-ink);
+}
+
+/* ---------- Музыка: тёмная панель с круглым фото ---------- */
+
+.panel {
+  position: relative;
+  margin: 20px;
+  min-height: 100svh;
+  background: var(--vinyl);
+  color: var(--ink);
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.panelLeft {
+  position: relative;
+  padding: clamp(32px, 4vw, 64px);
+  min-height: 100svh;
+}
+
+.panelPhoto {
+  position: absolute;
+  left: clamp(32px, 4vw, 64px);
+  bottom: -9vw;
+  width: min(42vw, 640px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.panelPhoto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.08);
+  animation: drift 18s ease-in-out infinite alternate;
+}
+
+@keyframes drift {
+  to {
+    transform: scale(1.18) translate(-3%, 2%);
+  }
+}
+
+.panelRight {
+  padding: clamp(32px, 4vw, 64px) clamp(32px, 4vw, 64px) clamp(32px, 4vw, 64px) 0;
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+  max-width: 460px;
+  justify-self: end;
+  width: 100%;
+}
+
+.block h3 {
+  font-size: var(--step-lead);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+.block p {
+  margin-top: 12px;
+}
+
+/* ---------- Отзывы ---------- */
+
+.quotes {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 0 24px;
+  align-items: start;
+}
+
+.quotePhoto {
+  grid-column: 2 / span 4;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.quotePhoto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.quoteMain {
+  grid-column: 7 / span 6;
+  margin-top: clamp(40px, 8vw, 120px);
+}
+
+.quoteMain blockquote {
+  font-size: clamp(1.5rem, 1rem + 1.6vw, 2.25rem);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  max-width: 24ch;
+}
+
+.cite {
+  margin-top: 28px;
+  color: var(--muted);
+}
+
+.quoteMore {
+  margin-top: 64px;
+  display: grid;
+  gap: 32px;
+  max-width: 44ch;
+}
+.quoteMore blockquote {
+  font-size: var(--step-lead);
+  line-height: 1.35;
+}
+
+/* ---------- Бронь: купон с круглыми вырезами ---------- */
+
+.coupon {
+  --notch: 30px;
+  position: relative;
+  display: grid;
+  grid-template-columns: 46% 54%;
+  background: var(--paper);
+  color: var(--paper-ink);
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+/* Вырезы купона: круги цвета фона на краях карточки */
+.notch {
+  position: absolute;
+  left: 46%;
+  width: calc(var(--notch) * 2);
+  height: calc(var(--notch) * 2);
+  border-radius: 50%;
+  background: var(--ground);
+  transform: translateX(-50%);
+}
+.notchTop {
+  top: calc(var(--notch) * -1);
+}
+.notchBottom {
+  bottom: calc(var(--notch) * -1);
+}
+
+/* Перфорация — ряд маленьких кругов, тот же мотив в самом мелком размере */
+.perforation {
+  position: absolute;
+  top: 44px;
+  bottom: 44px;
+  left: 46%;
+  width: 10px;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.perforation span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--ground);
+}
+
+.couponLeft {
+  padding: clamp(32px, 4vw, 56px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 32px;
+}
+
+.couponRight {
+  padding: clamp(32px, 4vw, 56px);
+  display: grid;
+  gap: 10px;
+  align-content: center;
+}
+
+.field {
+  display: block;
+}
+.field span {
+  display: block;
+  font-size: var(--step-small);
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--paper-muted);
+}
+.field input {
+  width: 100%;
+  min-height: 54px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 999px;
+  background: #e8dac4;
+  color: var(--paper-ink);
+  font: inherit;
+}
+.field input:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.fieldRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr 0.8fr;
+  gap: 10px;
+}
+
+.submit {
+  margin-top: 14px;
+  width: 100%;
+}
+
+.where {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  gap: clamp(32px, 6vw, 112px);
+  align-items: center;
+  max-width: 1180px;
+  margin: clamp(80px, 9vw, 160px) auto 0;
+}
+
+.streetPhoto {
+  aspect-ratio: 1;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.streetPhoto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+}
+
+.caption {
+  margin-top: 14px;
+  font-size: var(--step-small);
+  color: var(--muted);
+  text-align: center;
+}
+.caption a {
+  text-decoration: underline;
+}
+
+.facts {
+  display: grid;
+  gap: 28px;
+  font-size: var(--step-lead);
+  line-height: 1.35;
+}
+.facts strong {
+  display: block;
+  font-size: var(--step-body);
+  font-weight: 600;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+/* ---------- Подвал ---------- */
+
+.footer {
+  margin-top: var(--section);
+  background: var(--accent);
+  color: var(--accent-ink);
+  padding: clamp(48px, 6vw, 96px) var(--m) 32px;
+}
+
+.bigMark {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.footerGrid {
+  margin-top: 56px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 32px;
+}
+.footerGrid a {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+  transition: opacity 0.25s var(--ease);
+}
+.footerGrid a:hover {
+  opacity: 0.7;
+}
+
+.credits {
+  margin-top: 48px;
+  font-size: var(--step-small);
+  max-width: 90ch;
+}
+.credits a {
+  text-decoration: underline;
+}
+
+/* ---------- Телефон ---------- */
+
+@media (max-width: 860px) {
+  .navLinks .navLink {
+    display: none;
+  }
+
+  .hero {
+    grid-template-columns: 1fr;
+  }
+  .stage {
+    order: -1;
+    min-height: 0;
+    height: 56svh;
+  }
+  .record {
+    width: 118vw;
+    left: -9vw;
+  }
+  .card {
+    margin-top: -24px;
+    position: relative;
+  }
+
+  .taps {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .tap {
+    grid-template-columns: 48px 1fr;
+  }
+  .glass {
+    width: 48px;
+    height: 48px;
+    border-width: 6px;
+  }
+
+  .roomGrid {
+    grid-template-columns: 1fr;
+  }
+
+  /* На телефоне: заголовок, текст, затем круглое фото, срезанное нижним краем панели */
+  .panel {
+    margin: 10px;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .panelLeft {
+    display: contents;
+  }
+  .panelHead {
+    order: 0;
+    padding: 32px 32px 0;
+  }
+  .panelRight {
+    order: 1;
+    padding: 32px;
+    justify-self: stretch;
+    max-width: none;
+  }
+  .panelPhoto {
+    order: 2;
+    position: relative;
+    left: auto;
+    bottom: auto;
+    width: 86vw;
+    margin: 8px auto -22vw;
+    flex: none;
+  }
+
+  .quotePhoto {
+    grid-column: 1 / span 9;
+  }
+  .quoteMain {
+    grid-column: 1 / -1;
+    margin-top: 32px;
+  }
+
+  /* На телефоне купон стоит вертикально: перфорация — ряд кругов между текстом и полями */
+  .coupon {
+    grid-template-columns: 1fr;
+    overflow: hidden;
+  }
+  .notch {
+    display: none;
+  }
+  .couponLeft {
+    order: 0;
+  }
+  .perforation {
+    order: 1;
+    position: static;
+    transform: none;
+    width: auto;
+    height: 10px;
+    margin: 0 32px;
+    flex-direction: row;
+  }
+  .couponRight {
+    order: 2;
+  }
+  .fieldRow {
+    grid-template-columns: 1fr 1fr;
+  }
+  .fieldRow .field:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .where {
+    grid-template-columns: 1fr;
+  }
+  .streetPhoto {
+    width: 72vw;
+    margin: 0 auto;
+  }
+
+  .footerGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .disc,
+  .labelPhoto,
+  .panelPhoto img {
+    animation: none;
+  }
+  .labelPhoto:not(:first-child) {
+    opacity: 0;
+  }
+}
